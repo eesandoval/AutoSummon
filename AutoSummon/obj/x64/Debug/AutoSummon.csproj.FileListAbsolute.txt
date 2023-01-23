@@ -1,0 +1,10 @@
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\bin\x64\Debug\AutoSummon.deps.json
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\bin\x64\Debug\AutoSummon.dll
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\bin\x64\Debug\AutoSummon.pdb
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\obj\x64\Debug\AutoSummon.csproj.AssemblyReference.cache
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\obj\x64\Debug\AutoSummon.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\obj\x64\Debug\AutoSummon.AssemblyInfoInputs.cache
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\obj\x64\Debug\AutoSummon.AssemblyInfo.cs
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\obj\x64\Debug\AutoSummon.csproj.CoreCompileInputs.cache
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\obj\x64\Debug\AutoSummon.dll
+C:\Users\Rayziken\source\repos\AutoSummon\AutoSummon\obj\x64\Debug\AutoSummon.pdb
