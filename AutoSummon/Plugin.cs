@@ -8,6 +8,7 @@ using FFXIVClientStructs.FFXIV.Client.Game;
 using AutoSummon.Windows;
 using Dalamud.Game.Gui;
 using Dalamud;
+using Dalamud.Game.ClientState;
 
 namespace AutoSummon
 {
@@ -30,8 +31,10 @@ namespace AutoSummon
 
             this.Configuration = this.PluginInterface.GetPluginConfig() as Configuration ?? new Configuration();
             this.Configuration.Initialize(this.PluginInterface);
+
             WindowSystem.AddWindow(new ConfigWindow(this));
             WindowSystem.AddWindow(new MainWindow(this));
+
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
                 HelpMessage = "Auto summons carbuncle"
@@ -41,7 +44,7 @@ namespace AutoSummon
                 LoadUnsafe();
             }
             DutyStatus.Instance.OnDutyReset += OnDutyReset;
-            //DutyStatus.Instance.OnDutyWipe += OnDutyWipe;
+            DutyStatus.Instance.OnEnterDuty += OnDutyReset;
         }
 
         private unsafe void LoadUnsafe()
@@ -57,30 +60,29 @@ namespace AutoSummon
         
         private void OnCommand(string command, string args)
         {
-            if (!AutoSummon)
-            {
+            if (!this.Configuration.AutoSummon)
                 ServiceHandler.ChatGui.Print("Enabled Auto Summoning");
-                AutoSummon = true;
-                return;
-            }
-            ServiceHandler.ChatGui.Print("Disabled Auto Summoning");
-            AutoSummon = false;
+            else
+                ServiceHandler.ChatGui.Print("Disabled Auto Summoning");
+            this.Configuration.AutoSummon = !this.Configuration.AutoSummon;
+            AutoSummon = this.Configuration.AutoSummon;
+            this.Configuration.Save();
         }
 
         private unsafe static void OnDutyReset(Duty d)
         {
-            if (!AutoSummon)
+            // Must have enabled autosummon, and the clientstate cannot be null. Must be logged in, player can't be null, and player must be 27 (summoner)
+            if (!AutoSummon || ServiceHandler.ClientState == null || !ServiceHandler.ClientState.IsLoggedIn 
+                || ServiceHandler.ClientState.LocalPlayer == null || ServiceHandler.ClientState.LocalPlayer.ClassJob.Id != 27)
                 return;
             var result = AM->UseAction(ActionType.Spell, 25798);
-            if (!result)
-                ServiceHandler.ChatGui.PrintError("Failed to summon!");
+            // Supress for now
+            //if (!result)
+            //    ServiceHandler.ChatGui.PrintError("Failed to summon!");
 
         }
 
-        private static void OnDutyWipe(Duty d)
-        {
-        }
-
+        // Below is never called, maybe in the future we do something with a UI if we ever want to auto summon eos?
         private void DrawUI()
         {
             this.WindowSystem.Draw();

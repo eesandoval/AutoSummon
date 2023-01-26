@@ -1,14 +1,7 @@
 ﻿using Dalamud.Hooking;
 using Dalamud.Utility.Signatures;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Dalamud.Game.ClientState;
-using Dalamud.Logging;
-using Lumina.Excel.GeneratedSheets;
 
+// Below was taken from KamiLib and DutyTracker. In the future, will link to this library instead
 namespace AutoSummon
 {
     internal unsafe class DutyStatus : IDisposable

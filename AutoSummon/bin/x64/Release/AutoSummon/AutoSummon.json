@@ -1,0 +1,19 @@
+{
+  "Author": "Rayziken",
+  "Name": "Auto Summon",
+  "InternalName": "AutoSummon",
+  "AssemblyVersion": "1.1.0.0",
+  "Description": "Because Boup forgets to summon his pet",
+  "ApplicableVersion": "any",
+  "Tags": [
+    "auto",
+    "summon",
+    "carbuncle"
+  ],
+  "DalamudApiLevel": 8,
+  "LoadRequiredState": 0,
+  "LoadSync": false,
+  "LoadPriority": 0,
+  "Punchline": "Auto summons carbuncle",
+  "AcceptsFeedback": true
+}

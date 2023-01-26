@@ -28,7 +28,7 @@ public class MainWindow : Window, IDisposable
 
     public override void Draw()
     {
-        ImGui.Text($"The random config bool is {this.Plugin.Configuration.SomePropertyToBeSavedAndWithADefault}");
+        ImGui.Text($"Auto summon value is: {this.Plugin.Configuration.AutoSummon}");
 
         if (ImGui.Button("Show Settings"))
         {
