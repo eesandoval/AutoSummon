@@ -22,7 +22,7 @@
 		<FileVersion>1.1.0.0</FileVersion>
 	</PropertyGroup>
 	<PropertyGroup Condition="'$([System.Runtime.InteropServices.RuntimeInformation]::IsOSPlatform($([System.Runtime.InteropServices.OSPlatform]::Linux)))'">
-		<DalamudLibPath>$(DALAMUD_HOME)/</DalamudLibPath>
+		<DalamudLibPath>/home/rayziken/.xlcore/dalamud/Hooks/dev/</DalamudLibPath> <!-- There's a better way, but I'm hardcoding this for now-->
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="DalamudPackager" Version="2.1.10" />

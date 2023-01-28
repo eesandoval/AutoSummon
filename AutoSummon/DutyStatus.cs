@@ -104,7 +104,7 @@ namespace AutoSummon
             }
             catch (Exception e)
             {
-                throw new Exception("Failed DutyStatus");
+                throw new Exception("Failed DutyStatus: " + e.Message);
             }
             return DutyEventHook!.Original(a1, a2, a3);
         }
