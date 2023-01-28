@@ -43,7 +43,7 @@ namespace AutoSummon
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
-                HelpMessage = "Auto summons carbuncle"
+                HelpMessage = "Open the config window"
             });
             unsafe
             {
@@ -68,7 +68,7 @@ namespace AutoSummon
         
         private void OnCommand(string command, string args)
         {
-            ServiceHandler.ChatGui.Print("Opening Config Window");
+            //ServiceHandler.ChatGui.Print("Opening Config Window");
             ConfigWindow.IsOpen = true;
         }
 
