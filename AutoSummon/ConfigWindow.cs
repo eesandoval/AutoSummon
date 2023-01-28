@@ -9,11 +9,11 @@ public class ConfigWindow : Window, IDisposable
     private Configuration Configuration;
 
     public ConfigWindow(Plugin plugin) : base(
-        "Auto Summon Config",
+        "Auto Summon Config", 
         ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoScrollbar |
         ImGuiWindowFlags.NoScrollWithMouse)
     {
-        this.Size = new Vector2(232, 75);
+        this.Size = new Vector2(200, 175);
         this.SizeCondition = ImGuiCond.Always;
 
         this.Configuration = plugin.Configuration;
@@ -24,11 +24,47 @@ public class ConfigWindow : Window, IDisposable
     public override void Draw()
     {
         // can't ref a property, so use a local copy
-        var configValue = this.Configuration.AutoSummon;
-        if (ImGui.Checkbox("Auto Summon", ref configValue))
+        var summonerConfig = this.Configuration.Summoner;
+        var scholarConfig = this.Configuration.Scholar;
+        var scholarPetConfig = this.Configuration.ScholarPet;
+        var retryConfig = this.Configuration.Retry;
+        string[] scholarPets = {"Eos", "Selene"};
+
+        if (ImGui.Checkbox("Summoner", ref summonerConfig))
         {
-            this.Configuration.AutoSummon = configValue;
-            // can save immediately on change, if you don't want to provide a "Save and Close" button
+            this.Configuration.Summoner = summonerConfig;
+            this.Configuration.Save();
+        }
+
+        if (ImGui.Checkbox("Scholar", ref scholarConfig))
+        {
+            this.Configuration.Scholar = scholarConfig;
+            this.Configuration.Save();
+        }
+
+        ImGui.Text("Scholar Pet");
+        if (ImGui.BeginCombo("", scholarPets[scholarPetConfig]))
+        {
+            for (int i = 0; i < scholarPets.Length; i++)
+            {
+                var isSelected = (scholarPetConfig == i);
+                if (ImGui.Selectable(scholarPets[i], isSelected))
+                {
+                    scholarPetConfig = i;
+                }
+                if (isSelected)
+                {
+                    ImGui.SetItemDefaultFocus();
+                }
+            }
+            this.Configuration.ScholarPet = scholarPetConfig;
+            this.Configuration.Save();
+            ImGui.EndCombo();
+        }
+
+        if (ImGui.Checkbox("Retry", ref retryConfig))
+        {
+            this.Configuration.Retry = retryConfig;
             this.Configuration.Save();
         }
     }
