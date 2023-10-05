@@ -2,14 +2,9 @@
 using Dalamud.Plugin.Services;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using System.IO;
-using System.Reflection;
 using Dalamud.Interface.Windowing;
 using FFXIVClientStructs.FFXIV.Client.Game;
 using AutoSummon.Windows;
-using Dalamud.Game.Gui;
-using Dalamud;
-using Dalamud.Game.ClientState;
 
 namespace AutoSummon
 {
@@ -22,11 +17,10 @@ namespace AutoSummon
         public Configuration Configuration { get; init; }
         public WindowSystem WindowSystem = new("AutoSummon");
         private ConfigWindow ConfigWindow { get; init; }
-        //private MainWindow MainWindow { get; init; }
         public static bool AutoSummon = false;
         private unsafe static ActionManager* AM;
         private uint summonerID = 25798;
-        private uint[] scholarIDs = {17215, 17216}; // eos, selene
+        private uint scholarID = 17215; // eos RIP SELENE her id was 17216 ;-;
 
         public Plugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface, [RequiredVersion("1.0")] ICommandManager commandManager)
         {
@@ -38,9 +32,7 @@ namespace AutoSummon
             this.Configuration.Initialize(this.PluginInterface);
 
             ConfigWindow = new ConfigWindow(this);
-            //MainWindow = new MainWindow(this);
             WindowSystem.AddWindow(ConfigWindow);
-            //WindowSystem.AddWindow(MainWindow);
 
             this.CommandManager.AddHandler(CommandName, new CommandInfo(OnCommand)
             {
@@ -50,8 +42,8 @@ namespace AutoSummon
             {
                 LoadUnsafe();
             }
-            DutyStatus.Instance.OnDutyReset += OnDutyReset;
-            DutyStatus.Instance.OnEnterDuty += OnDutyReset;
+            ServiceHandler.DutyState.DutyStarted += OnDutyReset;
+            ServiceHandler.DutyState.DutyRecommenced += OnDutyReset;
             this.PluginInterface.UiBuilder.Draw += DrawUI;
             this.PluginInterface.UiBuilder.OpenConfigUi += DrawConfigUI;
         }
@@ -69,15 +61,14 @@ namespace AutoSummon
         
         private void OnCommand(string command, string args)
         {
-            //ServiceHandler.ChatGui.Print("Opening Config Window");
             ConfigWindow.IsOpen = true;
         }
 
-        private unsafe void OnDutyReset(Duty d)
+        private unsafe void OnDutyReset(object? sender, ushort t)
         {
             bool summonResult = true; // by default assume we summoned since we haven't tried yet
             uint actionID = summonerID;
-            // Immediate exit if anything is null/player not logged int
+            // Immediate exit if anything is null/player not logged in
             if (ServiceHandler.ClientState == null || !ServiceHandler.ClientState.IsLoggedIn || ServiceHandler.ClientState.LocalPlayer == null)
             {
                 return;
@@ -91,7 +82,7 @@ namespace AutoSummon
             }
             else if (classJobID == 28 && this.Configuration.Scholar)
             {
-                actionID = scholarIDs[this.Configuration.ScholarPet];
+                actionID = scholarID;
                 summonResult = AM->UseAction(ActionType.Action, actionID);
             }
 

@@ -26,9 +26,7 @@ public class ConfigWindow : Window, IDisposable
         // can't ref a property, so use a local copy
         var summonerConfig = this.Configuration.Summoner;
         var scholarConfig = this.Configuration.Scholar;
-        var scholarPetConfig = this.Configuration.ScholarPet;
         var retryConfig = this.Configuration.Retry;
-        string[] scholarPets = {"Eos", "Selene"};
 
         if (ImGui.Checkbox("Summoner", ref summonerConfig))
         {
@@ -40,26 +38,6 @@ public class ConfigWindow : Window, IDisposable
         {
             this.Configuration.Scholar = scholarConfig;
             this.Configuration.Save();
-        }
-
-        ImGui.Text("Scholar Pet");
-        if (ImGui.BeginCombo("", scholarPets[scholarPetConfig]))
-        {
-            for (int i = 0; i < scholarPets.Length; i++)
-            {
-                var isSelected = (scholarPetConfig == i);
-                if (ImGui.Selectable(scholarPets[i], isSelected))
-                {
-                    scholarPetConfig = i;
-                }
-                if (isSelected)
-                {
-                    ImGui.SetItemDefaultFocus();
-                }
-            }
-            this.Configuration.ScholarPet = scholarPetConfig;
-            this.Configuration.Save();
-            ImGui.EndCombo();
         }
 
         if (ImGui.Checkbox("Retry", ref retryConfig))
