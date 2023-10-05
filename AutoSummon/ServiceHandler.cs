@@ -1,25 +1,22 @@
 ﻿using Dalamud.Data;
 using Dalamud.Game;
-using Dalamud.Game.ClientState;
 using Dalamud.Game.Gui;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-
+using Dalamud.Plugin.Services;
 namespace AutoSummon
 {
     public class ServiceHandler
     {
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         [PluginService]
-        static internal DalamudPluginInterface PluginInterface { get; private set; }
+        public static DalamudPluginInterface PluginInterface { get; private set; } = null!;
         [PluginService]
-        static internal DataManager DataManager { get; private set; }
+        public static IDataManager DataManager { get; private set; } = null!;
         [PluginService]
-        static internal ClientState ClientState { get; private set; }
+        public static IClientState ClientState { get; private set; } = null!;
         [PluginService]
-        static internal Framework Framework { get; private set; }
+        public static IFramework Framework { get; private set; } = null!;
         [PluginService]
-        static internal ChatGui ChatGui { get; private set; }
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+        public static IChatGui ChatGui { get; private set; } = null!;
     }
 }

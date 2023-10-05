@@ -1,4 +1,5 @@
 ﻿using Dalamud.Game.Command;
+using Dalamud.Plugin.Services;
 using Dalamud.IoC;
 using Dalamud.Plugin;
 using System.IO;
@@ -17,7 +18,7 @@ namespace AutoSummon
         public string Name => "Auto Summon";
         private const string CommandName = "/autosum";
         private DalamudPluginInterface PluginInterface { get; init; }
-        private CommandManager CommandManager { get; init; }
+        private ICommandManager CommandManager { get; init; }
         public Configuration Configuration { get; init; }
         public WindowSystem WindowSystem = new("AutoSummon");
         private ConfigWindow ConfigWindow { get; init; }
@@ -27,7 +28,7 @@ namespace AutoSummon
         private uint summonerID = 25798;
         private uint[] scholarIDs = {17215, 17216}; // eos, selene
 
-        public Plugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface, [RequiredVersion("1.0")] CommandManager commandManager)
+        public Plugin([RequiredVersion("1.0")] DalamudPluginInterface pluginInterface, [RequiredVersion("1.0")] ICommandManager commandManager)
         {
             this.PluginInterface = pluginInterface;
             this.CommandManager = commandManager;
@@ -86,18 +87,18 @@ namespace AutoSummon
             if (classJobID == 27 && this.Configuration.Summoner)
             {
                 actionID = summonerID;
-                summonResult = AM->UseAction(ActionType.Spell, actionID); 
+                summonResult = AM->UseAction(ActionType.Action, actionID); 
             }
             else if (classJobID == 28 && this.Configuration.Scholar)
             {
                 actionID = scholarIDs[this.Configuration.ScholarPet];
-                summonResult = AM->UseAction(ActionType.Spell, actionID);
+                summonResult = AM->UseAction(ActionType.Action, actionID);
             }
 
             if (!summonResult && this.Configuration.Retry)
             {
                 ServiceHandler.ChatGui.Print("Failed to summon, retrying...");
-                summonResult = AM->UseAction(ActionType.Spell, actionID);
+                summonResult = AM->UseAction(ActionType.Action, actionID);
             }
 
             // Supress for now

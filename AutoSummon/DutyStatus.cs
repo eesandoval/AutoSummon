@@ -1,4 +1,5 @@
 ﻿using Dalamud.Hooking;
+using Dalamud.Plugin.Services;
 using Dalamud.Utility.Signatures;
 
 // Below was taken from KamiLib and DutyTracker. In the future, will link to this library instead
@@ -23,12 +24,12 @@ namespace AutoSummon
         public event DutyDelegate? OnDutyComplete;
         public event DutyDelegate? OnDutyReset;
         public event DutyDelegate? OnDutyWipe;
+        public static IGameInteropProvider gameInteropProvider {get; private set;} = null!;
 
-        DutyStatus()
+        public DutyStatus()
         {
-            SignatureHelper.Initialise(this);
+            gameInteropProvider.InitializeFromAttributes(this);
             DutyEventHook?.Enable();
-
             ServiceHandler.ClientState.TerritoryChanged += OnTerritoryChange;
         }
 
@@ -39,7 +40,7 @@ namespace AutoSummon
             ServiceHandler.ClientState.TerritoryChanged -= OnTerritoryChange;
         }
 
-        private void OnTerritoryChange(object? sender, ushort t)
+        private void OnTerritoryChange(ushort t)
         {
             var duty = DutyManager.Instance.GetCurrentDuty();
             if (duty.Classification == DutyClassification.NotInDuty)
